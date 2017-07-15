@@ -1,7 +1,5 @@
 package com.gryglicki.concurrent;
 
-import org.junit.jupiter.api.Tag;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
@@ -12,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.Executors.newFixedThreadPool;
 /**
- * Tests for {@link ResourceSharingTaskExecutor}
+ * Tests for {@link SynchronizedResourceSharingTaskExecutor}
  *
  * @author Michal Gryglicki
  * Created on 25/04/2017.
@@ -21,20 +19,21 @@ public class ResourceSharingTaskExecutorMultithreadedTest
 {
 
     /**
-     * TODO: Git Repo
+     * TODO: Add multithreading and delegation to ExecutorService underneath ResourceSharingTaskExecutor
+     * TODO: Return from execute() CompletableFuture ????
      * TODO: Tests - without Threads => only simple functionality of opening /closing / writing
      * TODO: Tests - with Threads, with temporary files, ...
      * TODO: Configure testing with https://travis-ci.org/
      * TODO: Exception handling while open / close / executeOn
-     * TODO: Option to close/reopen resource every X executeOn
+     * TODO: Option (configurable) to close/reopen resource every X executeOn - to prevent not closing files at all
      */
 
 //    @Test
 //    @Tag("multithreading")
     public void testResourceSharingExecutorSeparateFromThreadExecutor() throws Exception {
         ExecutorService executor = newFixedThreadPool(10);
-        ResourceSharingTaskExecutor<String, FileWriter>
-                        resourceSharingTaskExecutor = new ResourceSharingTaskExecutor<>();
+        SynchronizedResourceSharingTaskExecutor<String, FileWriter>
+                        resourceSharingTaskExecutor = new SynchronizedResourceSharingTaskExecutor<>();
 
         TaskOnResource task = fileAppenderTask("C:/dev/test/executors/src/test/resources/file.txt", "test value");
 
@@ -51,8 +50,8 @@ public class ResourceSharingTaskExecutorMultithreadedTest
 //    @Tag("multithreading")
     public void testResourceSharingExecutorSeparateFromThreadExecutorStringBuilder() throws Exception {
         ExecutorService executor = newFixedThreadPool(10);
-        ResourceSharingTaskExecutor<String, FileWriter>
-                        resourceSharingTaskExecutor = new ResourceSharingTaskExecutor<>();
+        SynchronizedResourceSharingTaskExecutor<String, FileWriter>
+                        resourceSharingTaskExecutor = new SynchronizedResourceSharingTaskExecutor<>();
 
         List<String> resultList = Collections.synchronizedList(new LinkedList<>());
         TaskOnResource task = stringBuilderTask("resourceDescription", "X", resultList);

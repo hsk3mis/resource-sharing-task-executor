@@ -24,7 +24,7 @@ public class ResourceSharingTaskExecutorSimpleTest
 
     @BeforeEach
     public void setUp() {
-        resourceSharingTaskExecutor = new ResourceSharingTaskExecutor<>();
+        resourceSharingTaskExecutor = new SynchronizedResourceSharingTaskExecutor<>();
         result = new AtomicReference<>(null);
         eventHappened = new AtomicBoolean(false);
     }
